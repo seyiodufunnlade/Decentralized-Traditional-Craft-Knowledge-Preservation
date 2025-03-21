@@ -9,3 +9,7 @@ U
 %tests/apprenticeship-tracking.test.ts,d/6/d65dd6c0797ec5abd9cf2e79237215509db3ad56
 P
  contracts/material-sourcing.clar,1/5/1514261f7555995c78b00fd74cc22398afe89264
+U
+%contracts/technique-registration.clar,4/c/4cef8ce9a5f10fecece53d135c828f1d0b189a42
+T
+$tests/technique-registration.test.ts,f/e/fe348366f49c7cc126e3064745a4f1fada7c56df

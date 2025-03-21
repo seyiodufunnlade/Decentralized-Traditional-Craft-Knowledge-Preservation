@@ -1,30 +1,50 @@
+;; Technique Registration Contract
+;; Documents traditional crafting methods
 
-;; title: technique-registration
-;; version:
-;; summary:
-;; description:
+(define-data-var last-technique-id uint u0)
 
-;; traits
-;;
+(define-map techniques
+  { id: uint }
+  {
+    name: (string-ascii 100),
+    description: (string-ascii 500),
+    origin: (string-ascii 100),
+    registrar: principal
+  }
+)
 
-;; token definitions
-;;
+;; Register a new technique
+(define-public (register-technique
+    (name (string-ascii 100))
+    (description (string-ascii 500))
+    (origin (string-ascii 100))
+  )
+  (let
+    (
+      (new-id (+ (var-get last-technique-id) u1))
+    )
+    (var-set last-technique-id new-id)
 
-;; constants
-;;
+    (map-set techniques
+      { id: new-id }
+      {
+        name: name,
+        description: description,
+        origin: origin,
+        registrar: tx-sender
+      }
+    )
 
-;; data vars
-;;
+    (ok new-id)
+  )
+)
 
-;; data maps
-;;
+;; Get technique details
+(define-read-only (get-technique (technique-id uint))
+  (map-get? techniques { id: technique-id })
+)
 
-;; public functions
-;;
-
-;; read only functions
-;;
-
-;; private functions
-;;
-
+;; Get total technique count
+(define-read-only (get-technique-count)
+  (var-get last-technique-id)
+)
