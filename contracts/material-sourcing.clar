@@ -1,30 +1,50 @@
+;; Material Sourcing Contract
+;; Tracks traditional and sustainable materials
 
-;; title: material-sourcing
-;; version:
-;; summary:
-;; description:
+(define-data-var last-material-id uint u0)
 
-;; traits
-;;
+(define-map materials
+  { id: uint }
+  {
+    name: (string-ascii 100),
+    source: (string-ascii 100),
+    sustainable: bool,
+    registrar: principal
+  }
+)
 
-;; token definitions
-;;
+;; Register a new material
+(define-public (register-material
+    (name (string-ascii 100))
+    (source (string-ascii 100))
+    (sustainable bool)
+  )
+  (let
+    (
+      (new-id (+ (var-get last-material-id) u1))
+    )
+    (var-set last-material-id new-id)
 
-;; constants
-;;
+    (map-set materials
+      { id: new-id }
+      {
+        name: name,
+        source: source,
+        sustainable: sustainable,
+        registrar: tx-sender
+      }
+    )
 
-;; data vars
-;;
+    (ok new-id)
+  )
+)
 
-;; data maps
-;;
+;; Get material details
+(define-read-only (get-material (material-id uint))
+  (map-get? materials { id: material-id })
+)
 
-;; public functions
-;;
-
-;; read only functions
-;;
-
-;; private functions
-;;
-
+;; Get total material count
+(define-read-only (get-material-count)
+  (var-get last-material-id)
+)
